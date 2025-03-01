@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Türkçe Cümle Türleri</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background-color: #f8f8f8;
+      padding: 10px;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+    }
+    
+    header {
+      background-color: #e60000;
+      color: white;
+      padding: 16px;
+      text-align: center;
+    }
+    
+    h1 {
+      font-size: 26px;
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+    
+    .content {
+      padding: 16px;
+    }
+    
+    /* Cümle kısmı: daha büyük ve ortalanmış */
+    .sentence-display {
+      background-color: #fff;
+      padding: 16px;
+      border-radius: 6px;
+      margin-bottom: 16px;
+      border-left: 4px solid #e60000;
+      font-size: 22px;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+    
+    /* Analiz kategorileri butonlarının 3 boyutlu görünümü */
+    .analysis-tabs {
+      display: flex;
+      border-bottom: 1px solid #eee;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+    
+    .tab {
+      padding: 10px 16px;
+      cursor: pointer;
+      background: linear-gradient(145deg, #ffffff, #f0f0f0);
+      border: none;
+      outline: none;
+      border-radius: 8px;
+      margin-right: 5px;
+      font-size: 14px;
+      transition: transform 0.2s;
+      color: #333;
+      font-weight: 500;
+      box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    }
+    
+    .tab:active {
+      transform: translateY(2px);
+    }
+    
+    .tab:hover {
+      background: linear-gradient(145deg, #f0f0f0, #ffffff);
+    }
+    
+    .tab.active {
+      background: linear-gradient(145deg, #e60000, #ff3333);
+      color: white;
+      box-shadow: none;
+    }
+    
+    /* Analiz butonu (3 boyutlu görünüm) - kırmızı gölge kaldırıldı */
+    .analysis-button {
+      background: linear-gradient(145deg, #e60000, #ff3333);
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 16px;
+      box-shadow: none;
+      cursor: pointer;
+      transition: transform 0.2s;
+      display: inline-block;
+    }
+    .analysis-button:active {
+      transform: translateY(2px);
+    }
+    
+    /* Cevap balonu stili */
+    .answer-balloon {
+      position: relative;
+      background: #f1f1f1;
+      border-radius: 10px;
+      padding: 12px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      color: #333;
+      margin-top: 10px;
+      display: inline-block;
+      line-height: 1.5;
+    }
+    .answer-balloon:after {
+      content: "";
+      position: absolute;
+      bottom: 100%;
+      left: 20px;
+      border-width: 10px;
+      border-style: solid;
+      border-color: transparent transparent #f1f1f1 transparent;
+    }
+    
+    .navigation {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    
+    button {
+      padding: 10px 18px;
+      background-color: #e60000;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      font-weight: 500;
+    }
+    
+    button:hover {
+      background-color: #cc0000;
+    }
+    
+    button:disabled {
+      background-color: #ffcccc;
+      color: #e68a8a;
+      cursor: not-allowed;
+    }
+    
+    .management {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    
+    /* Düzenle ve Ekle butonlarını daha büyük yapma */
+    #edit-btn, #add-btn {
+      padding: 12px 24px;
+      font-size: 16px;
+    }
+    
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+    
+    .modal-content {
+      background-color: white;
+      margin: 10% auto;
+      padding: 16px;
+      border-radius: 6px;
+      width: 80%;
+      max-width: 500px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    }
+    
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    
+    .close:hover {
+      color: #e60000;
+    }
+    
+    textarea, input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #eee;
+      border-radius: 4px;
+      font-size: 15px;
+      transition: border 0.2s;
+    }
+    
+    textarea:focus, input:focus {
+      border-color: #e60000;
+      outline: none;
+    }
+    
+    label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 4px;
+      color: #444;
+    }
+    
+    .form-group {
+      margin-bottom: 12px;
+    }
+    
+    .btn-group {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+    }
+    
+    .btn-cancel {
+      background-color: #f8f8f8;
+      color: #666;
+      border: 1px solid #eee;
+    }
+    
+    .btn-cancel:hover {
+      background-color: #f1f1f1;
+      color: #333;
+    }
+    
+    .btn-save {
+      background-color: #e60000;
+    }
+    
+    .btn-save:hover {
+      background-color: #cc0000;
+    }
+    
+    h2 {
+      margin-bottom: 16px;
+      color: #333;
+      font-weight: 600;
+      font-size: 20px;
+    }
+    
+    /* Responsive düzenlemeler */
+    @media (max-width: 600px) {
+      .analysis-tabs {
+        flex-direction: column;
+        border-bottom: none;
+      }
+      
+      .tab {
+        margin-bottom: 5px;
+        border-radius: 8px;
+        text-align: left;
+      }
+      
+      .management {
+        flex-direction: column;
+        gap: 10px;
+      }
+      
+      .navigation {
+        margin-bottom: 12px;
+      }
+      
+      button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Türkçe Cümle Türleri</h1>
+      <p>Cümle türlerini öğrenmek için etkileşimli uygulama</p>
+    </header>
+    
+    <div class="content">
+      <div class="sentence-display" id="sentence">
+        <!-- Örnek cümle burada gösterilecek -->
+      </div>
+      
+      <div class="analysis-tabs">
+        <button class="tab active" data-tab="yuklem-turu">YÜKLEMİN TÜRÜNE GÖRE</button>
+        <button class="tab" data-tab="yuklem-yeri">YÜKLEMİN YERİNE GÖRE</button>
+        <button class="tab" data-tab="anlam">ANLAMINA GÖRE</button>
+        <button class="tab" data-tab="yapi">YAPISINA GÖRE</button>
+      </div>
+      
+      <!-- Analiz kısmı: buton ortalanmış, margin-top ile aşağı konumlandırılmış -->
+      <div class="analysis-content" id="analysis-content">
+        <!-- Buton buraya yüklenecek -->
+      </div>
+      
+      <div class="navigation">
+        <button id="prev-btn">Önceki Cümle</button>
+        <button id="next-btn">Sonraki Cümle</button>
+      </div>
+      
+      <div class="management">
+        <button id="edit-btn">Cümle Düzenle</button>
+        <button id="add-btn">Cümle Ekle</button>
+        <button id="delete-btn">Cümle Sil</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Düzenleme Modal -->
+  <div id="edit-modal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Cümle Düzenle</h2>
+      <div class="form-group">
+        <label for="edit-sentence">Cümle:</label>
+        <input type="text" id="edit-sentence" />
+      </div>
+      <div class="form-group">
+        <label for="edit-yuklem-turu">Yüklemin Türüne Göre:</label>
+        <textarea id="edit-yuklem-turu"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="edit-yuklem-yeri">Yüklemin Yerine Göre:</label>
+        <textarea id="edit-yuklem-yeri"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="edit-anlam">Anlamına Göre:</label>
+        <textarea id="edit-anlam"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="edit-yapi">Yapısına Göre:</label>
+        <textarea id="edit-yapi"></textarea>
+      </div>
+      <div class="btn-group">
+        <button class="btn-cancel" id="edit-cancel">İptal</button>
+        <button class="btn-save" id="edit-save">Kaydet</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Ekleme Modal -->
+  <div id="add-modal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Yeni Cümle Ekle</h2>
+      <div class="form-group">
+        <label for="add-sentence">Cümle:</label>
+        <input type="text" id="add-sentence" />
+      </div>
+      <div class="form-group">
+        <label for="add-yuklem-turu">Yüklemin Türüne Göre:</label>
+        <textarea id="add-yuklem-turu"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="add-yuklem-yeri">Yüklemin Yerine Göre:</label>
+        <textarea id="add-yuklem-yeri"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="add-anlam">Anlamına Göre:</label>
+        <textarea id="add-anlam"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="add-yapi">Yapısına Göre:</label>
+        <textarea id="add-yapi"></textarea>
+      </div>
+      <div class="btn-group">
+        <button class="btn-cancel" id="add-cancel">İptal</button>
+        <button class="btn-save" id="add-save">Kaydet</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Silme Onay Modal -->
+  <div id="delete-modal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Cümle Sil</h2>
+      <p>Bu cümleyi silmek istediğinizden emin misiniz?</p>
+      <div class="btn-group">
+        <button class="btn-cancel" id="delete-cancel">İptal</button>
+        <button class="btn-save" id="delete-confirm">Sil</button>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    // Örnek cümleler ve analizleri
+    let sentences = [
+      {
+        text: "Çocuklar bahçede koşuyorlar.",
+        yuklemTuru: "Fiil cümlesidir. Yüklemi 'koşuyorlar' fiilidir.",
+        yuklemYeri: "Kurallı cümledir. Yüklem sonda bulunmaktadır.",
+        anlam: "Olumlu cümledir. Olumsuzluk bildiren bir ifade yoktur.",
+        yapi: "Basit cümledir. Tek yargı bildirmektedir."
+      },
+      {
+        text: "Kitap okumak en sevdiğim hobilerden biridir.",
+        yuklemTuru: "İsim cümlesidir. Yüklemi 'biridir' isim soylu kelimedir.",
+        yuklemYeri: "Kurallı cümledir. Yüklem sonda bulunmaktadır.",
+        anlam: "Olumlu cümledir. Olumsuzluk bildiren bir ifade yoktur.",
+        yapi: "Basit cümledir. Tek yargı bildirmektedir."
+      },
+      {
+        text: "Hiç kimse bu soruyu çözemedi.",
+        yuklemTuru: "Fiil cümlesidir. Yüklemi 'çözemedi' fiilidir.",
+        yuklemYeri: "Kurallı cümledir. Yüklem sonda bulunmaktadır.",
+        anlam: "Olumsuz cümledir. 'Çözemedi' fiili olumsuzluk eki (-me) almıştır.",
+        yapi: "Basit cümledir. Tek yargı bildirmektedir."
+      },
+      {
+        text: "Gördüm onu dün okulun bahçesinde.",
+        yuklemTuru: "Fiil cümlesidir. Yüklemi 'gördüm' fiilidir.",
+        yuklemYeri: "Devrik cümledir. Yüklem başta bulunmaktadır.",
+        anlam: "Olumlu cümledir. Olumsuzluk bildiren bir ifade yoktur.",
+        yapi: "Basit cümledir. Tek yargı bildirmektedir."
+      },
+      {
+        text: "Hava karadı ve yağmur başladı.",
+        yuklemTuru: "Fiil cümlesidir. Yüklemleri 'karadı' ve 'başladı' fiilleridir.",
+        yuklemYeri: "Kurallı cümledir. Yüklemler sıralarında sonda bulunmaktadır.",
+        anlam: "Olumlu cümledir. Olumsuzluk bildiren bir ifade yoktur.",
+        yapi: "Bağlı cümledir. 'Ve' bağlacıyla bağlanmış iki ayrı yargı vardır."
+      },
+      {
+        text: "Eve geldiğimde hava kararmıştı.",
+        yuklemTuru: "Fiil cümlesidir. Ana yüklemi 'kararmıştı' fiilidir.",
+        yuklemYeri: "Kurallı cümledir. Ana yüklem sonda bulunmaktadır.",
+        anlam: "Olumlu cümledir. Olumsuzluk bildiren bir ifade yoktur.",
+        yapi: "Birleşik cümledir. 'Eve geldiğimde' yan cümlesi, ana cümleye zaman anlamı katmaktadır."
+      },
+      {
+        text: "Güzel miydi film?",
+        yuklemTuru: "İsim cümlesidir. Yüklemi 'güzel miydi' isim soylu kelimedir.",
+        yuklemYeri: "Devrik cümledir. Yüklem başta bulunmaktadır.",
+        anlam: "Soru cümlesidir. Soru eki (-mi) kullanılmıştır.",
+        yapi: "Basit cümledir. Tek yargı bildirmektedir."
+      },
+      {
+        text: "Lütfen pencereyi açar mısın?",
+        yuklemTuru: "Fiil cümlesidir. Yüklemi 'açar mısın' fiilidir.",
+        yuklemYeri: "Kurallı cümledir. Yüklem sonda bulunmaktadır.",
+        anlam: "Soru kipinde istek cümlesidir. Rica anlamı taşımaktadır.",
+        yapi: "Basit cümledir. Tek yargı bildirmektedir."
+      },
+      {
+        text: "Acaba ne zaman eve gideceğiz?",
+        yuklemTuru: "Fiil cümlesidir. Yüklemi 'gideceğiz' fiilidir.",
+        yuklemYeri: "Kurallı cümledir. Yüklem sonda bulunmaktadır.",
+        anlam: "Soru cümlesidir. Soru kelimesi (ne zaman) kullanılmıştır.",
+        yapi: "Basit cümledir. Tek yargı bildirmektedir."
+      },
+      {
+        text: "Yağmur yağdı, toprak ıslandı.",
+        yuklemTuru: "Fiil cümlesidir. Yüklemleri 'yağdı' ve 'ıslandı' fiilleridir.",
+        yuklemYeri: "Kurallı cümledir. Yüklemler sıralarında sonda bulunmaktadır.",
+        anlam: "Olumlu cümledir. Olumsuzluk bildiren bir ifade yoktur.",
+        yapi: "Sıralı cümledir. Virgülle ayrılmış iki ayrı cümle vardır."
+      }
+    ];
+    
+    let currentIndex = 0;
+    let currentAnalysisText = "";
+    
+    // DOM elementleri
+    const sentenceElement = document.getElementById('sentence');
+    const analysisContent = document.getElementById('analysis-content');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const editBtn = document.getElementById('edit-btn');
+    const addBtn = document.getElementById('add-btn');
+    const deleteBtn = document.getElementById('delete-btn');
+    const tabs = document.querySelectorAll('.tab');
+    
+    // Modal elementleri
+    const editModal = document.getElementById('edit-modal');
+    const addModal = document.getElementById('add-modal');
+    const deleteModal = document.getElementById('delete-modal');
+    const closeButtons = document.querySelectorAll('.close');
+    
+    // Düzenleme form elementleri
+    const editSentence = document.getElementById('edit-sentence');
+    const editYuklemTuru = document.getElementById('edit-yuklem-turu');
+    const editYuklemYeri = document.getElementById('edit-yuklem-yeri');
+    const editAnlam = document.getElementById('edit-anlam');
+    const editYapi = document.getElementById('edit-yapi');
+    const editCancel = document.getElementById('edit-cancel');
+    const editSave = document.getElementById('edit-save');
+    
+    // Ekleme form elementleri
+    const addSentence = document.getElementById('add-sentence');
+    const addYuklemTuru = document.getElementById('add-yuklem-turu');
+    const addYuklemYeri = document.getElementById('add-yuklem-yeri');
+    const addAnlam = document.getElementById('add-anlam');
+    const addYapi = document.getElementById('add-yapi');
+    const addCancel = document.getElementById('add-cancel');
+    const addSave = document.getElementById('add-save');
+    
+    // Silme onay elementleri
+    const deleteCancel = document.getElementById('delete-cancel');
+    const deleteConfirm = document.getElementById('delete-confirm');
+    
+    // Analiz metnini güncelle (ilk cümleyi bold yaparak)
+    function updateCurrentAnalysis(tabId) {
+      const sentence = sentences[currentIndex];
+      let content = '';
+      switch(tabId) {
+        case 'yuklem-turu':
+          content = sentence.yuklemTuru;
+          break;
+        case 'yuklem-yeri':
+          content = sentence.yuklemYeri;
+          break;
+        case 'anlam':
+          content = sentence.anlam;
+          break;
+        case 'yapi':
+          content = sentence.yapi;
+          break;
+      }
+      if (content.indexOf('.') !== -1) {
+        let parts = content.split('.');
+        let firstSentence = parts[0].trim();
+        let remaining = parts.slice(1).join('.').trim();
+        currentAnalysisText = `<strong>${firstSentence}.</strong>${remaining ? ' ' + remaining : ''}`;
+      } else {
+        currentAnalysisText = `<strong>${content}</strong>`;
+      }
+    }
+    
+    // Analiz alanını buton olarak sıfırlar ve ortalar, buton biraz aşağı konumlandırılır.
+    function resetAnalysisArea() {
+      analysisContent.innerHTML = `<div style="text-align: center; margin-top: 20px;">
+        <button class="analysis-button" id="show-analysis-btn">Cevabı Göster</button>
+      </div>`;
+      document.getElementById("show-analysis-btn").addEventListener('click', function() {
+        analysisContent.innerHTML = `<div style="text-align: center; margin-top: 20px;">
+          <div class="answer-balloon">${currentAnalysisText}</div>
+        </div>`;
+      });
+    }
+    
+    // Başlangıç cümlesini göster ve analiz alanını sıfırla
+    function showSentence() {
+      sentenceElement.textContent = sentences[currentIndex].text;
+      updateNavButtons();
+      // Varsayılan aktif sekme "yuklem-turu"
+      updateCurrentAnalysis('yuklem-turu');
+      resetAnalysisArea();
+      
+      // Tüm sekmelerde aktiflik güncellemesi
+      tabs.forEach(tab => {
+        tab.classList.remove('active');
+      });
+      tabs[0].classList.add('active');
+    }
+    
+    // Navigasyon butonlarını güncelle
+    function updateNavButtons() {
+      prevBtn.disabled = currentIndex === 0;
+      nextBtn.disabled = currentIndex === sentences.length - 1;
+    }
+    
+    // Sekme değiştirme olayları: seçilen sekmeye ait analiz metnini güncelle ve analiz alanını buton olarak sıfırla
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        updateCurrentAnalysis(tab.dataset.tab);
+        resetAnalysisArea();
+      });
+    });
+    
+    // Önceki cümle butonu
+    prevBtn.addEventListener('click', () => {
+      if(currentIndex > 0) {
+        currentIndex--;
+        showSentence();
+      }
+    });
+    
+    // Sonraki cümle butonu
+    nextBtn.addEventListener('click', () => {
+      if(currentIndex < sentences.length - 1) {
+        currentIndex++;
+        showSentence();
+      }
+    });
+    
+    // Düzenleme modalını aç
+    editBtn.addEventListener('click', () => {
+      const sentence = sentences[currentIndex];
+      editSentence.value = sentence.text;
+      editYuklemTuru.value = sentence.yuklemTuru;
+      editYuklemYeri.value = sentence.yuklemYeri;
+      editAnlam.value = sentence.anlam;
+      editYapi.value = sentence.yapi;
+      editModal.style.display = 'block';
+    });
+    
+    // Ekleme modalını aç
+    addBtn.addEventListener('click', () => {
+      addSentence.value = '';
+      addYuklemTuru.value = '';
+      addYuklemYeri.value = '';
+      addAnlam.value = '';
+      addYapi.value = '';
+      addModal.style.display = 'block';
+    });
+    
+    // Silme modalını aç
+    deleteBtn.addEventListener('click', () => {
+      deleteModal.style.display = 'block';
+    });
+    
+    // Modal kapatma butonları
+    closeButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        editModal.style.display = 'none';
+        addModal.style.display = 'none';
+        deleteModal.style.display = 'none';
+      });
+    });
+    
+    // Düzenleme iptal
+    editCancel.addEventListener('click', () => {
+      editModal.style.display = 'none';
+    });
+    
+    // Düzenleme kaydet
+    editSave.addEventListener('click', () => {
+      sentences[currentIndex] = {
+        text: editSentence.value,
+        yuklemTuru: editYuklemTuru.value,
+        yuklemYeri: editYuklemYeri.value,
+        anlam: editAnlam.value,
+        yapi: editYapi.value
+      };
+      showSentence();
+      editModal.style.display = 'none';
+    });
+    
+    // Ekleme iptal
+    addCancel.addEventListener('click', () => {
+      addModal.style.display = 'none';
+    });
+    
+    // Ekleme kaydet
+    addSave.addEventListener('click', () => {
+      const newSentence = {
+        text: addSentence.value,
+        yuklemTuru: addYuklemTuru.value,
+        yuklemYeri: addYuklemYeri.value,
+        anlam: addAnlam.value,
+        yapi: addYapi.value
+      };
+      sentences.push(newSentence);
+      currentIndex = sentences.length - 1;
+      showSentence();
+      addModal.style.display = 'none';
+    });
+    
+    // Silme iptal
+    deleteCancel.addEventListener('click', () => {
+      deleteModal.style.display = 'none';
+    });
+    
+    // Silme onay
+    deleteConfirm.addEventListener('click', () => {
+      sentences.splice(currentIndex, 1);
+      if(sentences.length === 0) {
+        sentences.push({
+          text: "Lütfen yeni bir cümle ekleyin.",
+          yuklemTuru: "",
+          yuklemYeri: "",
+          anlam: "",
+          yapi: ""
+        });
+      }
+      if(currentIndex >= sentences.length) {
+        currentIndex = sentences.length - 1;
+      }
+      showSentence();
+      deleteModal.style.display = 'none';
+    });
+    
+    // Modal dışına tıklayınca modalları kapat
+    window.onclick = function(event) {
+      if (event.target == editModal) {
+        editModal.style.display = "none";
+      } else if (event.target == addModal) {
+        addModal.style.display = "none";
+      } else if (event.target == deleteModal) {
+        deleteModal.style.display = "none";
+      }
+    };
+    
+    // İlk cümleyi göster
+    showSentence();
+  </script>
+</body>
+</html>
