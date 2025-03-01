@@ -55,14 +55,16 @@
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     }
     
-    /* Analiz kategorileri butonlarının 3 boyutlu görünümü */
+    /* Analiz kategorileri butonlarının kapsayıcısı */
     .analysis-tabs {
       display: flex;
+      flex-wrap: wrap;
+      gap: 10px;  /* Yatay ve dikey aralık eklendi */
       border-bottom: 1px solid #eee;
       margin-bottom: 12px;
-      flex-wrap: wrap;
     }
     
+    /* Analiz kategorileri butonları (3 boyutlu görünüm) */
     .tab {
       padding: 10px 16px;
       cursor: pointer;
@@ -70,7 +72,6 @@
       border: none;
       outline: none;
       border-radius: 8px;
-      margin-right: 5px;
       font-size: 14px;
       transition: transform 0.2s;
       color: #333;
@@ -267,11 +268,12 @@
     @media (max-width: 600px) {
       .analysis-tabs {
         flex-direction: column;
+        gap: 10px; /* Mobilde de aralar açıldı */
         border-bottom: none;
       }
       
       .tab {
-        margin-bottom: 5px;
+        margin-bottom: 10px; /* Mobilde daha fazla alt boşluk */
         border-radius: 8px;
         text-align: left;
       }
@@ -310,7 +312,7 @@
         <button class="tab" data-tab="yapi">YAPISINA GÖRE</button>
       </div>
       
-      <!-- Analiz kısmı: buton ortalanmış, margin-top ile aşağı konumlandırılmış -->
+      <!-- Analiz kısmı: buton ortalanmış, margin-top ile biraz daha aşağı konumlandırıldı -->
       <div class="analysis-content" id="analysis-content">
         <!-- Buton buraya yüklenecek -->
       </div>
@@ -549,7 +551,7 @@
       }
     }
     
-    // Analiz alanını buton olarak sıfırlar ve ortalar, buton biraz aşağı konumlandırılır.
+    // Analiz alanını buton olarak sıfırlar, ortalar ve buton biraz aşağı konumlandırılır.
     function resetAnalysisArea() {
       analysisContent.innerHTML = `<div style="text-align: center; margin-top: 20px;">
         <button class="analysis-button" id="show-analysis-btn">Cevabı Göster</button>
