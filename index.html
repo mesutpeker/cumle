@@ -268,12 +268,12 @@
     @media (max-width: 600px) {
       .analysis-tabs {
         flex-direction: column;
-        gap: 10px; /* Mobilde de aralar açıldı */
+        gap: 10px;
         border-bottom: none;
       }
       
       .tab {
-        margin-bottom: 10px; /* Mobilde daha fazla alt boşluk */
+        margin-bottom: 10px;
         border-radius: 8px;
         text-align: left;
       }
@@ -408,7 +408,7 @@
   </div>
   
   <script>
-    // Örnek cümleler ve analizleri
+    // Örnek cümleler dizisini 20 öğeye tamamlıyoruz.
     let sentences = [
       {
         text: "Çocuklar bahçede koşuyorlar.",
@@ -479,6 +479,76 @@
         yuklemYeri: "Kurallı cümledir. Yüklemler sıralarında sonda bulunmaktadır.",
         anlam: "Olumlu cümledir. Olumsuzluk bildiren bir ifade yoktur.",
         yapi: "Sıralı cümledir. Virgülle ayrılmış iki ayrı cümle vardır."
+      },
+      {
+        text: "Sabah erken kalkıp koşuya çıktım.",
+        yuklemTuru: "Fiil cümlesidir. Yüklemi 'çıktım' fiilidir.",
+        yuklemYeri: "Kurallı cümledir. Yüklem sonda bulunmaktadır.",
+        anlam: "Olumlu cümledir. Enerji dolu bir ifade vardır.",
+        yapi: "Basit cümledir. Tek yargı bildirmektedir."
+      },
+      {
+        text: "Dün akşam sinemaya gittik.",
+        yuklemTuru: "Fiil cümlesidir. Yüklemi 'gittik' fiilidir.",
+        yuklemYeri: "Kurallı cümledir. Yüklem sonda bulunmaktadır.",
+        anlam: "Olumlu cümledir. Keyifli bir akşam ifadesi vardır.",
+        yapi: "Basit cümledir. Tek yargı bildirmektedir."
+      },
+      {
+        text: "Öğrenciler sınıfta dikkatle ders dinliyor.",
+        yuklemTuru: "Fiil cümlesidir. Yüklemi 'dinliyor' fiilidir.",
+        yuklemYeri: "Kurallı cümledir. Yüklem sonda bulunmaktadır.",
+        anlam: "Olumlu cümledir. Dikkat ve öğrenme ifadesi vardır.",
+        yapi: "Basit cümledir. Tek yargı bildirmektedir."
+      },
+      {
+        text: "Yemek pişirmek onun en büyük tutkusu.",
+        yuklemTuru: "İsim cümlesidir. Yüklemi 'tutkusu' isim soylu kelimedir.",
+        yuklemYeri: "Kurallı cümledir. Yüklem sonda bulunmaktadır.",
+        anlam: "Olumlu cümledir. Tutku ve sevgi ifadesi vardır.",
+        yapi: "Basit cümledir. Tek yargı bildirmektedir."
+      },
+      {
+        text: "Araba hızla yolunu aldı.",
+        yuklemTuru: "Fiil cümlesidir. Yüklemi 'aldı' fiilidir.",
+        yuklemYeri: "Kurallı cümledir. Yüklem sonda bulunmaktadır.",
+        anlam: "Olumlu cümledir. Hareket ve hız ifadesi vardır.",
+        yapi: "Basit cümledir. Tek yargı bildirmektedir."
+      },
+      {
+        text: "Köpeğim parkta neşeyle oynadı.",
+        yuklemTuru: "Fiil cümlesidir. Yüklemi 'oynadı' fiilidir.",
+        yuklemYeri: "Kurallı cümledir. Yüklem sonda bulunmaktadır.",
+        anlam: "Olumlu cümledir. Neşe ve hareket ifadesi vardır.",
+        yapi: "Basit cümledir. Tek yargı bildirmektedir."
+      },
+      {
+        text: "Telefonumu kaybettim ve çok üzüldüm.",
+        yuklemTuru: "Fiil cümlesidir. Yüklemleri 'kaybettim' ve 'üzüldüm' fiilleridir.",
+        yuklemYeri: "Kurallı cümledir. Yüklemler sonda bulunmaktadır.",
+        anlam: "Olumsuz cümledir. Kaybetme ve üzüntü ifadesi vardır.",
+        yapi: "Bağlı cümledir. 'Ve' bağlacıyla iki yargı birleşmiştir."
+      },
+      {
+        text: "Bahçedeki çiçekler rengarenk açmış.",
+        yuklemTuru: "Fiil cümlesidir. Yüklemi 'açmış' fiilidir.",
+        yuklemYeri: "Kurallı cümledir. Yüklem sonda bulunmaktadır.",
+        anlam: "Olumlu cümledir. Canlılık ve renk ifadesi vardır.",
+        yapi: "Basit cümledir. Tek yargı bildirmektedir."
+      },
+      {
+        text: "O gün hava çok sıcaktı, dondurma yedim.",
+        yuklemTuru: "Fiil cümlesidir. Yüklemi 'yedim' fiilidir.",
+        yuklemYeri: "Kurallı cümledir. Yüklem cümlenin sonunda yer alır.",
+        anlam: "Olumlu cümledir. İki ayrı yargı içerir.",
+        yapi: "Sıralı cümledir. Virgülle ayrılmış iki cümle içerir."
+      },
+      {
+        text: "Arkadaşlarım ile birlikte piknik yaptık.",
+        yuklemTuru: "Fiil cümlesidir. Yüklemi 'yaptık' fiilidir.",
+        yuklemYeri: "Kurallı cümledir. Yüklem sonda bulunmaktadır.",
+        anlam: "Olumlu cümledir. Birlikte etkinlik ifadesi vardır.",
+        yapi: "Basit cümledir. Tek yargı bildirmektedir."
       }
     ];
     
